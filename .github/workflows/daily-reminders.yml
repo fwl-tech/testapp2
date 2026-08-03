@@ -1,0 +1,13 @@
+name: Daily invoice reminder check
+on:
+  schedule:
+    - cron: '0 14 * * *' # 14:00 UTC daily
+  workflow_dispatch: {}
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call agent cron endpoint
+        run: |
+          curl -sf -X POST "${{ secrets.APP_URL }}/api/agent/cron" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"
